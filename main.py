@@ -12,6 +12,7 @@ random.seed(1)
 # Add Random Days
 def addDays(baselineDate):
   dayAdded = random.randrange(100, 1000)
+  print(baselineDate)
   baselineDate = datetime.datetime.strptime(baselineDate, "%Y-%m-%d")
   endDate = baselineDate + datetime.timedelta(dayAdded)
   return endDate.strftime("%Y-%m-%d")
@@ -276,7 +277,7 @@ def retrieveCSVFormat(dataset, fileName):
            'activity', 'unit', 'input', 'target', 'protocol_id', 'frequency_type', 
            'frequency_value', 'agent', 'startdate', 'enddate', 'comments']
   newCSV = ','.join(header) + '\n'
-  newCSV += dataset
+  newCSV += dataset.strip('"')
   with open(f"{fileName}.csv", "w") as f:
     f.write(newCSV)
 
@@ -298,7 +299,8 @@ def main(df):
   # For every line in the EuroMD data
   for dfRow in df:
     rownum += 1
-    dfRow= dfRow.strip().split(',')
+    print(rownum)
+    dfRow= dfRow.strip().strip('"').split(',')
     # Skip the header row
     if rownum == 1:
       header = dfRow
